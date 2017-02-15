@@ -1,0 +1,24 @@
+.entry-list {
+  color: $grey;
+
+  &-table {
+    width: 100%; 
+  }
+  
+  [class^="entry-list-heading"] {
+    padding: .5em;
+    font-weight: 400;
+  }
+
+  &-heading-bad {
+    border-right: none;
+  }
+
+  @each $colourName, $value in $colourMap {
+    &-heading-#{$colourName} {
+      box-shadow: 0px -3px 0px $value inset;
+      border-right: 2px solid white;
+    }
+  }
+
+}

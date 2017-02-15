@@ -1,0 +1,43 @@
+/*
+
+Reserved for mixins
+
+*/
+
+// Flexbox configuration
+@mixin flexbox($direction, $justify, $align, $wrap: no-wrap) {
+    display: flex;
+    flex-direction: $direction;
+    justify-content: $justify;
+    align-items: $align;
+    flex-wrap: $wrap;
+}
+
+// animated gradient on hover discovered at:
+// https://medium.com/@dave_lunny/animating-css-gradients-using-only-css-d2fd7671e759#.r66iexcqm
+@mixin gradient-animation($degree, $start-colour, $end-colour, $transitionTime: 300ms ease-out){
+    background-size: 100%;
+    position: relative;
+    z-index: 100;
+
+    &:before {
+        border-radius: inherit;
+        background-image: linear-gradient($degree, darken($start-colour, 10%) 0%, darken($end-colour, 10%) 100%);
+        content: '';
+        display: block;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        width: 100%;
+        z-index: -100;
+        transition: opacity $transitionTime;
+    }
+
+    &:hover {
+        &:before {
+            opacity: 1;
+        }
+    }
+}

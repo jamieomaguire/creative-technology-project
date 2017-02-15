@@ -1,0 +1,8 @@
+/**
+ * Primary Stylesheet
+ * - does not output direct CSS, only imports other directories
+ */
+
+@import 'vendor/vendor-dir';
+@import 'modules/modules-dir';
+@import 'components/components-dir';
