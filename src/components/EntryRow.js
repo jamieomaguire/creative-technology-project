@@ -1,31 +1,50 @@
 import { PropTypes } from 'react'
+import MdClose from 'react-icons/lib/md/close'
+import TiTickOutline from 'react-icons/lib/ti/tick-outline'
 
-export const EntryRow = ({meal, time, good, okay, bad}) => (
-  <tr className="entry-row">
-    
-    <td className="entry-row-cell">
-      {time}
-    </td>
+export const EntryRow = ({meal, time, good, okay, bad, onDeleteEntry}) => {
 
-    <td className="entry-row-cell">
-      {meal}
-    </td>  
+  /**
+   * Send the data-id as a unique identifier for the entry to be deleted
+   */
+  const deleteEntry = (e) => {
+    let row = e.target.closest('tr')
+    let rowID = row.attributes['data-id'].value
+    onDeleteEntry({
+      entryId: rowID
+    })
+  }
 
-    <td className="entry-row-cell">
-      {(good) ? 'X' : null}
-    </td>
+  return (
+    <tr className="entry-row" data-id={time}>
+      
+      <td className="entry-row-cell">
+        {time}
+      </td>
 
-    <td className="entry-row-cell">
-      {(okay) ? 'X' : null}
-    </td> 
+      <td className="entry-row-cell">
+        {meal}
+      </td>  
 
-    <td className="entry-row-cell">
-      {(bad) ? 'X' : null}
-    </td> 
+      <td className="entry-row-cell-good">
+        {(good) ? <TiTickOutline/> : null}
+      </td>
 
-  </tr>
+      <td className="entry-row-cell-okay">
+        {(okay) ? <TiTickOutline/> : null}
+      </td> 
 
-)
+      <td className="entry-row-cell-bad">
+        {(bad) ? <TiTickOutline/> : null}
+      </td> 
+
+      <td className="entry-row-cell js-delete-entry" onClick={deleteEntry}>
+        <MdClose/>
+      </td>
+
+    </tr>
+  )
+}
 
 EntryRow.propTypes = {
   meal: PropTypes.string.isRequired,

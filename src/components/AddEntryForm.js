@@ -57,7 +57,7 @@ export const AddEntryForm = ({ meal,
           <input id="time" 
                   type="text" 
                   required 
-                  placeholder="Time"
+                  placeholder="Time i.e 10:00, 13:45"
                   ref={input => _time = input} />
         </p>
 

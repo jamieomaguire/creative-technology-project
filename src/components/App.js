@@ -10,10 +10,24 @@ export class App extends Component {
         this.state = {
             entries: [
                         {
-                            time: '15:28',
-                            meal: 'wholegrain toast and scrambled eggs',
+                            time: '10:25',
+                            meal: 'Wholegrain toast and scrambled eggs',
                             good: true,
                             okay: false,
+                            bad: false
+                        },
+                        {
+                            time: '12:40',
+                            meal: 'Packet of crisps',
+                            good: false,
+                            okay: false,
+                            bad: true
+                        },
+                        {
+                            time: '15:10',
+                            meal: 'Ham sandwich',
+                            good: false,
+                            okay: true,
                             bad: false
                         }
                     ], // entries
@@ -22,7 +36,7 @@ export class App extends Component {
                     labels: ['Good', 'Okay', 'Bad'],
                     datasets: [
                         {
-                            data: [0, 0, 0],
+                            data: [10, 10, 10],
                             backgroundColor: [
                                 '#68D286',
                                 '#FBAD2F',
@@ -53,6 +67,7 @@ export class App extends Component {
             } // chartData
         }; // state
         this.addEntry = this.addEntry.bind(this)
+        this.deleteEntry = this.deleteEntry.bind(this)
     } // constructor
 
     addEntry(newEntry) {
@@ -75,7 +90,7 @@ export class App extends Component {
 
         this.setState({
             /**
-             * Take all the exisitng entries in state and push those into a new state object
+             * Take all the existing entries in state and push those into a new state object
              * and add the new entry
              */
             entries: [
@@ -118,6 +133,84 @@ export class App extends Component {
 
         })
 
+    } // Add Entry
+
+    // REFACTOR THIS
+    deleteEntry(entryId) {
+        let ID = entryId.entryId
+        let entries = this.state.entries
+
+        function search(nameKey, myArray){
+            for (var i=0; i < myArray.length; i++) {
+                if (myArray[i].time === nameKey) {
+                    return myArray[i];
+                }
+            }
+        }
+
+       var resultObject = search(ID, entries);
+
+        /**
+         * Determine which chart value to decrement
+         * MUST REFACTOR AND FIND PROPER WAY TO DO THIS
+         */
+    
+        let cData = this.state.chartData;
+        let cDataVals = cData.datasets[0].data;
+        let cDataGood = parseInt(cDataVals[0]);
+        let cDataOkay = parseInt(cDataVals[1]); 
+        let cDataBad = parseInt(cDataVals[2]);
+
+        if (resultObject.good) {
+            cDataGood -= 10;
+        } else if (resultObject.okay) {
+            cDataOkay -= 10;
+        } else if (resultObject.bad) {
+            cDataBad -= 10;
+        }
+       
+       // Return a new array without the deleted entry
+       let updatedEntries = entries.filter(function(i) {
+           return i != resultObject
+       })
+
+       this.setState({
+           entries: updatedEntries,
+           chartData: {
+                    labels: ['Good', 'Okay', 'Bad'],
+                    datasets: [
+                        {
+                            data: [`${cDataGood}`, `${cDataOkay}`, `${cDataBad}`],
+                            backgroundColor: [
+                                '#68D286',
+                                '#FBAD2F',
+                                '#EB585C'
+                            ],
+                            hoverBackgroundColor: [
+                           '#68D286',
+                           '#FBAD2F',
+                           '#EB585C'
+                           ]
+                        }
+                    ],
+                    options: {
+                        cutoutPercentage: 50,
+                        datasetStrokeWidth : 5,
+                        elements: {
+                            arc: {
+                                borderWidth: 2
+                            }
+                        },
+                        legend: {
+                            labels: {
+                                boxWidth: 20,
+                                padding: 25
+                            }
+                        }
+                    }
+            } // chartData
+       })
+
     }
 
 
@@ -128,7 +221,7 @@ export class App extends Component {
             <div className="app">
                 <DailyChart vals={this.state.chartData} />
                 <AddEntryForm onNewEntry={this.addEntry} />
-                <EntryList entries={this.state.entries} />
+                <EntryList entries={this.state.entries} onDeleteEntry={this.deleteEntry}/>
             </div>
         ); // return
     } // render
