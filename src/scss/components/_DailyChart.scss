@@ -1,11 +1,14 @@
 .daily-chart {
+  max-width: 600px;
+  width: 100%;
+  margin: auto;
   
   canvas {
-    padding: .5em;
-    max-width: 600px;
     margin: 0 auto;
+    padding-top: .5em;
+    padding-bottom: .5em;
     margin-bottom: 1.5em;
-    background-color: #F1F1F1;
+    width: 100%;
   }
   
 }

@@ -1,0 +1,46 @@
+
+.settings {
+
+  &-heading {
+    margin: 0;
+    font-weight: 300;
+    text-align: center;
+    font-size: 2em;
+    color: $grey;
+  }
+
+  &-list {
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0;
+    list-style-type: none;
+  }
+
+  &-listItem {
+    border-bottom: 1px solid #CCC;
+    transition: all 300ms ease-out;
+
+  }
+
+  &-link {
+    padding: .5em;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    color: #AAA;
+    transition: all 300ms ease-out;
+    &:hover {
+      color: $grey;
+      box-shadow: inset 2px 0 0 $bad;
+      background-color: #F1F1F1;
+    }
+
+    svg {
+      margin-right: 1em;
+      height: 1.5em;
+      width: 1.5em;
+    }
+  }
+  
+}

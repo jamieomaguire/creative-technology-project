@@ -1,73 +1,18 @@
 // Main container that gets imported and rendered in the index.js file
 import { Component } from 'react'
-import { AddEntryForm } from './AddEntryForm'
-import { EntryList } from './EntryList'
-import { DailyChart } from './DailyChart'
+import { state } from '../data/state'
+import { Menu } from './Menu'
+import { TodayView } from './TodayView'
+import { OverviewView } from './OverviewView'
+import { Settings } from './Settings'
 
 export class App extends Component {
     constructor(props){
-        super(props);
-        this.state = {
-            entries: [
-                        {
-                            time: '10:25',
-                            meal: 'Wholegrain toast and scrambled eggs',
-                            good: true,
-                            okay: false,
-                            bad: false
-                        },
-                        {
-                            time: '12:40',
-                            meal: 'Packet of crisps',
-                            good: false,
-                            okay: false,
-                            bad: true
-                        },
-                        {
-                            time: '15:10',
-                            meal: 'Ham sandwich',
-                            good: false,
-                            okay: true,
-                            bad: false
-                        }
-                    ], // entries
-                    // To access chart data values: chartData.datasets[0].data
-            chartData: {
-                    labels: ['Good', 'Okay', 'Bad'],
-                    datasets: [
-                        {
-                            data: [10, 10, 10],
-                            backgroundColor: [
-                                '#68D286',
-                                '#FBAD2F',
-                                '#EB585C'
-                            ],
-                            hoverBackgroundColor: [
-                           '#68D286',
-                           '#FBAD2F',
-                           '#EB585C'
-                           ]
-                        }
-                    ],
-                    options: {
-                        cutoutPercentage: 50,
-                        datasetStrokeWidth : 5,
-                        elements: {
-                            arc: {
-                                borderWidth: 2
-                            }
-                        },
-                        legend: {
-                            labels: {
-                                boxWidth: 20,
-                                padding: 25
-                            }
-                        }
-                    }
-            } // chartData
-        }; // state
+        super(props)
+        this.state = state
         this.addEntry = this.addEntry.bind(this)
         this.deleteEntry = this.deleteEntry.bind(this)
+        this.completeDay = this.completeDay.bind(this)
     } // constructor
 
     addEntry(newEntry) {
@@ -75,10 +20,10 @@ export class App extends Component {
          * MUST REFACTOR AND FIND PROPER WAY TO DO THIS
          */
         let cData = this.state.chartData;
-        let cDataVals = cData.datasets[0].data;
-        let cDataGood = parseInt(cDataVals[0]);
-        let cDataOkay = parseInt(cDataVals[1]); 
-        let cDataBad = parseInt(cDataVals[2]);
+        let cDataVals = cData.datasets[0].data
+        let cDataGood = parseInt(cDataVals[0])
+        let cDataOkay = parseInt(cDataVals[1])
+        let cDataBad = parseInt(cDataVals[2])
 
         if (newEntry.good) {
             cDataGood += 10;
@@ -135,26 +80,26 @@ export class App extends Component {
 
     } // Add Entry
 
-    // REFACTOR THIS
     deleteEntry(entryId) {
         let ID = entryId.entryId
         let entries = this.state.entries
 
-        function search(nameKey, myArray){
-            for (var i=0; i < myArray.length; i++) {
-                if (myArray[i].time === nameKey) {
-                    return myArray[i];
+        /**
+         * @params variable ID, this.state.entries
+         */
+        const search = (key, array) => {
+            for (let i=0; i < array.length; i++) {
+                if (array[i].time === key) {
+                    return array[i];
                 }
             }
         }
 
-       var resultObject = search(ID, entries);
+       let resultObject = search(ID, entries);
 
         /**
          * Determine which chart value to decrement
-         * MUST REFACTOR AND FIND PROPER WAY TO DO THIS
          */
-    
         let cData = this.state.chartData;
         let cDataVals = cData.datasets[0].data;
         let cDataGood = parseInt(cDataVals[0]);
@@ -213,17 +158,118 @@ export class App extends Component {
 
     }
 
+    // Work out total for the day and add it to past entries, then reset entries
+    completeDay() {
 
+        let days = this.state.entries
+
+        let goodCount = 0
+        let okayCount = 0
+        let badCount = 0
+
+        // iterate through array elements to count good, okay and bads
+        for(let i = 0; i < days.length; i++) {
+            if (days[i].good) {
+                goodCount += 10;
+            } else if (days[i].okay) {
+                okayCount += 10;
+            } else if (days[i].bad) {
+                badCount += 10;
+            }
+        }
+
+        // compare the counts to see which value was the majority and return it
+        function returnHighest(good, okay, bad) {
+            if (good > okay && good > bad) {
+                return 'good'
+            } else if (okay > good && okay > bad) {
+                return 'okay'
+            } else if (bad > good && bad > okay) {
+                return 'bad'
+            } else {
+                return 'okay'
+            }
+        }
+
+        let result = returnHighest(goodCount, okayCount, badCount)
+
+        // get todays date as a string 
+        function getToday() {
+            let date = new Date()
+            let dateISO = date.toISOString();
+            return dateISO
+        }
+
+        // create an object to push into pastEntries array
+        function createEntry(today, result) {
+            return { day: today, value: result }
+        } 
+        
+        // form new object to add to past entries
+        let todaysEntry = (createEntry(getToday(), result))
+
+        let pastEntries = this.state.pastEntries
+        let updatedPastEntries = pastEntries.unshift(todaysEntry)
+
+        this.setState({
+            entries: [],
+            chartData: {
+                    labels: ['Good', 'Okay', 'Bad'],
+                    datasets: [
+                        {
+                            data: [0, 0, 0],
+                            backgroundColor: [
+                                '#68D286',
+                                '#FBAD2F',
+                                '#EB585C'
+                            ],
+                            hoverBackgroundColor: [
+                           '#68D286',
+                           '#FBAD2F',
+                           '#EB585C'
+                           ]
+                        }
+                    ],
+                    options: {
+                        cutoutPercentage: 50,
+                        datasetStrokeWidth : 5,
+                        elements: {
+                            arc: {
+                                borderWidth: 2
+                            }
+                        },
+                        legend: {
+                            labels: {
+                                boxWidth: 20,
+                                padding: 25
+                            }
+                        }
+                    }
+            } // chartData
+            
+        })
+
+    }
 
 
     render() {
         return (
             <div className="app">
-                <DailyChart vals={this.state.chartData} />
-                <AddEntryForm onNewEntry={this.addEntry} />
-                <EntryList entries={this.state.entries} onDeleteEntry={this.deleteEntry}/>
+                 <Menu/>
+                {(this.props.location.pathname === "/") ?
+                <TodayView vals={this.state.chartData} 
+                        onNewEntry={this.addEntry}
+                        entries={this.state.entries} 
+                        onDeleteEntry={this.deleteEntry}
+                        onCompleteDay={this.completeDay} /> :
+
+                (this.props.location.pathname === "/overview") ?
+                <OverviewView vals={this.state.overviewChartData} 
+                              barData={this.state.barChartData}
+                              pastEntries={this.state.pastEntries} /> :
+                <Settings /> }
             </div>
-        ); // return
+        ) // return
     } // render
 }
 

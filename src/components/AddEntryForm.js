@@ -1,4 +1,5 @@
 import { PropTypes } from 'react'
+import { RoundButton } from './RoundButton'
 
 export const AddEntryForm = ({ meal, 
                                time, 
@@ -62,7 +63,6 @@ export const AddEntryForm = ({ meal,
         </p>
 
         <div className="add-entry-form-radio-container">
-
           <label htmlFor="good" className="add-entry-form-radio-label">Good 
             <input id="good" 
                   type="radio" 
@@ -92,8 +92,9 @@ export const AddEntryForm = ({ meal,
           </label>
         </div>
 
-        <p><button className="add-entry-form-btn">Add Entry</button></p>
+        <p><RoundButton cta='Add Entry'/></p>
       </form>
+      
     )
 }
 
