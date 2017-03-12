@@ -39,7 +39,7 @@ export const EntryRow = ({meal, time, good, okay, bad, onDeleteEntry}) => {
       </td> 
 
       <td className="entry-row-cell js-delete-entry" onClick={deleteEntry}>
-        <MdClose/>
+        <button tabIndex="0"> <MdClose /> </button>
       </td>
 
     </tr>

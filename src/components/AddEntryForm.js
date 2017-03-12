@@ -8,8 +8,6 @@ export const AddEntryForm = ({ meal,
                                bad,
                                onNewEntry }) => {
 
-  
-
   /**
    * Refs to reach out to individual elements and figure out their values
    * keep the ref variables in scope so they can be accessed inside of the nested functions

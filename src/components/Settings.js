@@ -4,7 +4,7 @@ import FaEnvelope from 'react-icons/lib/fa/envelope'
 
 
 export const Settings = () => (
-  <aside className="settings">
+  <section className="settings">
     <h2 className="settings-heading">Settings</h2>
     <ul className="settings-list">
       <li className="settings-listItem">
@@ -17,5 +17,5 @@ export const Settings = () => (
         <a href="javascript:void(0)" className="settings-link"><FaSignOut/> Logout</a>
       </li>
     </ul>
-  </aside>
+  </section>
 )
