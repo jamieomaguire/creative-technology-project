@@ -8,6 +8,9 @@ export const Settings = () => (
     <h2 className="settings-heading">Settings</h2>
     <ul className="settings-list">
       <li className="settings-listItem">
+        <a href="javascript:void(0)" className="settings-link"><FaEnvelope /> Color blind mode</a>
+      </li>
+      <li className="settings-listItem">
         <a href="javascript:void(0)" className="settings-link"><FaEnvelope /> Change Email Address</a>
       </li>
       <li className="settings-listItem">
