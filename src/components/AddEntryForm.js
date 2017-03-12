@@ -40,6 +40,12 @@ export const AddEntryForm = ({ meal,
 
   }
 
+  const checkRadio = (e) => {
+    if (e.which === 32 || e.which === 13) {
+      e.target.children[0].checked = true;
+    }
+  }
+
 
   return (
       <form onSubmit={submit} className="add-entry-form">
@@ -61,7 +67,7 @@ export const AddEntryForm = ({ meal,
         </p>
 
         <div className="add-entry-form-radio-container">
-          <label htmlFor="good" className="add-entry-form-radio-label">Good 
+          <label onKeyPress={checkRadio} htmlFor="good" className="add-entry-form-radio-label" tabIndex="0">Good 
             <input id="good" 
                   type="radio" 
                   name="food-radio" 
@@ -71,7 +77,7 @@ export const AddEntryForm = ({ meal,
           </label>
           
 
-          <label htmlFor="okay" className="add-entry-form-radio-label">Okay 
+          <label onKeyPress={checkRadio} htmlFor="okay" className="add-entry-form-radio-label" tabIndex="0">Okay 
             <input id="okay" 
                   type="radio" 
                   name="food-radio" 
@@ -80,7 +86,7 @@ export const AddEntryForm = ({ meal,
             <span className="add-entry-form-radio-check-okay"></span>
           </label>
           
-          <label htmlFor="bad" className="add-entry-form-radio-label">Bad
+          <label onKeyPress={checkRadio} htmlFor="bad" className="add-entry-form-radio-label" tabIndex="0">Bad
             <input id="bad" 
                   type="radio" 
                   name="food-radio" 

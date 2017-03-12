@@ -7,7 +7,6 @@ import MdSettings from 'react-icons/lib/md/settings'
 
 export const Menu = () => (
   <nav className="menu">
-  <a href="##mainContent" className="skip-link"></a>
    <ul className="menu-nav-list">
      <li className="menu-nav-listItem">
        <Link to="/" activeClassName="menu-nav-selected">
