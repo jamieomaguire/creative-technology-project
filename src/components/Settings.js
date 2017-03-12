@@ -10,6 +10,7 @@ export const Settings = () => (
     <h2 className="settings-heading">Settings</h2>
     <ul className="settings-list">
       <li className="settings-listItem">
+<<<<<<< HEAD
         <a href="javascript:void(0)" className="settings-link"><MdColorLens /> Colour blindness options</a>
       </li>
       <li className="settings-listItem">
