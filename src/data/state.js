@@ -1,4 +1,5 @@
 export const state = {
+    isLoggedIn: false,
     entries: [
         {
             time: '10:25',

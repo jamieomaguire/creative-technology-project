@@ -1,7 +1,5 @@
 export const OverviewRow = ({day, value}) => {
 
-  // Data formatting functions
-
   // Get day from iso string
   function isoStringToDate(string) {
     let b = string.split(/\D/);
@@ -26,8 +24,10 @@ export const OverviewRow = ({day, value}) => {
   return (
     <tr className="overview-row">
       
-      <td className="overview-row-cell">
-        {val}
+      <td className="overview-row-cell js-value">
+        {
+         val
+        }
       </td>
 
       <td className="overview-row-cell">

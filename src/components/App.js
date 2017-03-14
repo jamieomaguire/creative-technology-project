@@ -46,6 +46,7 @@ export class App extends Component {
                     labels: ['Good', 'Okay', 'Bad'],
                     datasets: [
                         {
+                            // the chart data is stored in these three variables
                             data: [`${cDataGood}`, `${cDataOkay}`, `${cDataBad}`],
                             backgroundColor: [
                                 '#68D286',
@@ -158,17 +159,28 @@ export class App extends Component {
 
     }
 
-    // Work out total for the day and add it to past entries, then reset entries
+    /**
+     * If the user is logged in, complete the day and add the processed result to past entries
+     * If the user is not logged in, prompted them to log in or register to access the feature
+     */
     completeDay() {
 
-        let days = this.state.entries
+        if (!this.state.isLoggedIn) {
+            console.log('not logged in')
+           let modal = document.querySelector('.Modal')
+           console.log(modal)
+           modal.style.visibility = "visible"
 
-        let goodCount = 0
-        let okayCount = 0
-        let badCount = 0
+        } else if(this.state.isLoggedIn) {
+            console.log('logged in')
+            let days = this.state.entries
 
-        // iterate through array elements to count good, okay and bads
-        for(let i = 0; i < days.length; i++) {
+            let goodCount = 0
+            let okayCount = 0
+            let badCount = 0
+
+            // iterate through array elements to count good, okay and bads
+            for(let i = 0; i < days.length; i++) {
             if (days[i].good) {
                 goodCount += 10;
             } else if (days[i].okay) {
@@ -176,10 +188,10 @@ export class App extends Component {
             } else if (days[i].bad) {
                 badCount += 10;
             }
-        }
+            }
 
-        // compare the counts to see which value was the majority and return it
-        function returnHighest(good, okay, bad) {
+            // compare the counts to see which value was the majority and return it
+            function returnHighest(good, okay, bad) {
             if (good > okay && good > bad) {
                 return 'good'
             } else if (okay > good && okay > bad) {
@@ -189,29 +201,29 @@ export class App extends Component {
             } else {
                 return 'okay'
             }
-        }
+            }
 
-        let result = returnHighest(goodCount, okayCount, badCount)
+            let result = returnHighest(goodCount, okayCount, badCount)
 
-        // get todays date as a string 
-        function getToday() {
+            // get todays date as a string 
+            function getToday() {
             let date = new Date()
             let dateISO = date.toISOString();
             return dateISO
-        }
+            }
 
-        // create an object to push into pastEntries array
-        function createEntry(today, result) {
+            // create an object to push into pastEntries array
+            function createEntry(today, result) {
             return { day: today, value: result }
-        } 
-        
-        // form new object to add to past entries
-        let todaysEntry = (createEntry(getToday(), result))
+            } 
 
-        let pastEntries = this.state.pastEntries
-        let updatedPastEntries = pastEntries.unshift(todaysEntry)
+            // form new object to add to past entries
+            let todaysEntry = (createEntry(getToday(), result))
 
-        this.setState({
+            let pastEntries = this.state.pastEntries
+            let updatedPastEntries = pastEntries.unshift(todaysEntry)
+
+            this.setState({
             entries: [],
             chartData: {
                     labels: ['Good', 'Okay', 'Bad'],
@@ -224,10 +236,10 @@ export class App extends Component {
                                 '#EB585C'
                             ],
                             hoverBackgroundColor: [
-                           '#68D286',
-                           '#FBAD2F',
-                           '#EB585C'
-                           ]
+                        '#68D286',
+                        '#FBAD2F',
+                        '#EB585C'
+                        ]
                         }
                     ],
                     options: {
@@ -246,10 +258,10 @@ export class App extends Component {
                         }
                     }
             } // chartData
-            
-        })
 
-    }
+            })
+            } // end if
+    } // end onCompleteDay
 
 
     render() {
